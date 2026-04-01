@@ -1,5 +1,7 @@
 package com.example.atividade_dm2_retrofit_client;
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -13,5 +15,6 @@ public interface API {
 //    Call<List<Repo>> getUserRepos();
 
     @GET("users/{username}/repos")
+    @NonNull
     Call <List<Repo>> getUserRepos(@Path("username") String username);
 }

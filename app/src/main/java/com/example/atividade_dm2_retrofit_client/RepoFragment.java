@@ -6,6 +6,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -26,8 +31,9 @@ import retrofit2.Response;
  *
  */
 public class RepoFragment extends Fragment {
-    ListView repoListView;
+    RecyclerView rvRepos;
     Context context;
+    ArrayList<Repo> repos;
 
     private String username;
 
@@ -77,8 +83,7 @@ public class RepoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        repoListView = view.findViewById(R.id.repoListView);
-
+        rvRepos = view.findViewById(R.id.rvRepos);
         context = requireContext();
         getUserRepo(context);
     }
@@ -88,24 +93,17 @@ public class RepoFragment extends Fragment {
         call.enqueue(new Callback<List<Repo>>() {
             @Override
             public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
-                List<Repo> repoList = response.body();
-                String[] repos = new String[repoList.size()];
-                for (int i = 0; i < repos.length; i++) {
-                    repos[i] = repoList.get(i).getUrl();
-                }
+                repos = new ArrayList<>(response.body());
 
-                ArrayAdapter<String> repoAdapter = new ArrayAdapter<>(
-                        context.getApplicationContext(),
-                        android.R.layout.simple_list_item_1,
-                        repos
-                );
-
-                repoListView.setAdapter(repoAdapter);
+                Adaptador adaptador = new Adaptador(repos);
+                rvRepos.setLayoutManager(new LinearLayoutManager(context));
+                rvRepos.setAdapter(adaptador);
             }
 
             @Override
             public void onFailure(Call<List<Repo>> call, Throwable t) {
                 Toast.makeText(context, "Ocorreu um erro: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.d("ERROR_FAIL", "Problema: " + t.getMessage() + " - " + t.getStackTrace());
             }
         });
     }

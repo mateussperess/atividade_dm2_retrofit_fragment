@@ -6,7 +6,6 @@ public class Repo {
     private String full_name;
     private String description;
     private String url;
-
     public Repo(Long id, String name, String full_name, String description, String url) {
         this.id = id;
         this.name = name;

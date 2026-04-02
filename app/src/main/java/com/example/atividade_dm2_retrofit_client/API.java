@@ -17,4 +17,7 @@ public interface API {
     @GET("users/{username}/repos")
     @NonNull
     Call <List<Repo>> getUserRepos(@Path("username") String username);
+
+    @GET("users/{username}")
+    Call<Owner> getOwnerByUsername(@Path("username") String username);
 }

@@ -93,8 +93,12 @@ public class RepoFragment extends Fragment {
         call.enqueue(new Callback<List<Repo>>() {
             @Override
             public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
-                repos = new ArrayList<>(response.body());
+                if (response.body() == null || !response.isSuccessful()) {
+                    Log.d("API_RESPONSE", "Code: " + response.code());
+                    return;
+                }
 
+                repos = new ArrayList<>(response.body());
                 Adaptador adaptador = new Adaptador(repos);
                 rvRepos.setLayoutManager(new LinearLayoutManager(context));
                 rvRepos.setAdapter(adaptador);

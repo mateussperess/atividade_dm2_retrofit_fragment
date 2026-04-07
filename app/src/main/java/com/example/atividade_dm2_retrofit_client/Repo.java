@@ -6,6 +6,8 @@ public class Repo {
     private String full_name;
     private String description;
     private String url;
+    private Owner owner;
+
     public Repo(Long id, String name, String full_name, String description, String url) {
         this.id = id;
         this.name = name;
@@ -32,5 +34,9 @@ public class Repo {
 
     public String getUrl() {
         return url;
+    }
+
+    public Owner getOwner() {
+        return owner;
     }
 }

@@ -1,8 +1,10 @@
 package com.example.atividade_dm2_retrofit_client;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,11 +22,15 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolder>{
     public static class ViewHolder extends RecyclerView.ViewHolder {
         final TextView txtNomeRepo;
         final TextView txtUrlRepo;
+        final Button btnRepoContributions;
+        final Button btnRepoIssues;
 
         public ViewHolder(View view) {
             super(view);
             this.txtNomeRepo = (TextView) view.findViewById(R.id.txtNomeRepo);
             this.txtUrlRepo = (TextView) view.findViewById(R.id.txtUrlRepo);
+            this.btnRepoContributions = (Button) view.findViewById(R.id.btnRepoContributions);
+            this.btnRepoIssues = (Button) view.findViewById(R.id.btnRepoIssues);
         }
     }
 
@@ -41,6 +47,26 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.ViewHolder>{
         Repo repo = repos.get(position);
         holder.txtNomeRepo.setText(repo.getName());
         holder.txtUrlRepo.setText(repo.getUrl());
+
+        holder.btnRepoContributions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent repoContributionsIntent = new Intent(v.getContext(), RepoContributions.class);
+                repoContributionsIntent.putExtra("owner", repo.getOwner().getLogin());
+                repoContributionsIntent.putExtra("repoName", repo.getName());
+                v.getContext().startActivity(repoContributionsIntent);
+            }
+        });
+
+        holder.btnRepoIssues.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent repoIssuesIntent = new Intent(v.getContext(), RepoIssues.class);
+                repoIssuesIntent.putExtra("owner", repo.getOwner().getLogin());
+                repoIssuesIntent.putExtra("repoName", repo.getName());
+                v.getContext().startActivity(repoIssuesIntent);
+            }
+        });
     }
 
     @Override

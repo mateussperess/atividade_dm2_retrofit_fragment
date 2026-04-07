@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageView ivOwnerAvatar;
     private TextView txtOwnerName;
-    private TextView txtOwnerBio;
     private TextView txtOwnerUrl;
     private TextView txtOwnerContributions;
 
@@ -37,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         etUsuario = findViewById(R.id.etUsuario);
 
         txtOwnerName = findViewById(R.id.txtOwnerName);
-        txtOwnerBio = findViewById(R.id.txtOwnerBio);
         ivOwnerAvatar = findViewById(R.id.ivOwnerAvatar);
         txtOwnerUrl = findViewById(R.id.txtOwnerUrl);
 
@@ -60,13 +58,16 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<Owner>() {
             @Override
             public void onResponse(Call<Owner> call, Response<Owner> response) {
+                if (response.body() == null || !response.isSuccessful()) {
+                    Log.d("API_RESPONSE", "Code: " + response.code());
+                    return;
+                }
                 Owner owner = response.body();
-                txtOwnerName.setText(owner.getName().toString());
-                txtOwnerBio.setText(owner.getBio().toString());
-                txtOwnerUrl.setText(owner.getUrl().toString());
+                txtOwnerName.setText(owner.getName());
+                txtOwnerUrl.setText(owner.getHtmlUrl());
                 Picasso.get().load(owner.getAvatarUrl()).into(ivOwnerAvatar);
 
-                MainActivity.this.login = owner.getLogin().toString();
+                MainActivity.this.login = owner.getLogin();
                 Log.d("SUCCES_GET_LOGIN", "Login coletado com sucesso: " + owner.getLogin().toString());
             }
 

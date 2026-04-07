@@ -10,11 +10,12 @@ public class RetrofitClient {
     private API api;
 
     private RetrofitClient() {
+
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(chain -> {
                     Request request = chain.request().newBuilder()
-                            .addHeader("Authorization", "Bearer")
-                            .build();
+		            .addHeader("Authorization", "Bearer " + BuildConfig.GITHUB_TOKEN)
+			    .build();
                     return chain.proceed(request);
                 })
                 .build();

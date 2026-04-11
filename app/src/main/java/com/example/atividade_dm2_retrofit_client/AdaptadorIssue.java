@@ -1,5 +1,6 @@
 package com.example.atividade_dm2_retrofit_client;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,8 +43,8 @@ public class AdaptadorIssue extends RecyclerView.Adapter<AdaptadorIssue.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Issue issue = issues.get(position);
-        holder.txtTitle.setText(issue.getTitle());
-        holder.txtBody.setText(issue.getBody());
+        holder.txtTitle.setText("#" + issue.getNumber() + " — " + issue.getTitle());
+        holder.txtBody.setText(issue.getBody() != null ? issue.getBody() : "Sem descrição.");
         holder.txtStatus.setText(issue.getState());
     }
 

@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Owner> call, Response<Owner> response) {
                 if (response.body() == null || !response.isSuccessful()) {
-                    Log.d("API_RESPONSE", "Code: " + response.code());
                     return;
                 }
                 Owner owner = response.body();

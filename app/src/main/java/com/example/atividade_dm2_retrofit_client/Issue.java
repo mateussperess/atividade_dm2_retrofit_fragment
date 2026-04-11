@@ -1,19 +1,26 @@
 package com.example.atividade_dm2_retrofit_client;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Issue {
-    private int id;
+    private Long id;
     private String title;
+    private int number;
     private String body;
     private String state;
     private int comments;
-    private String createdAt;
+    private String created_at;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
     public String getTitle() {
         return title;
+    }
+
+    public int getNumber() {
+        return number;
     }
 
     public String getBody() {
@@ -29,6 +36,6 @@ public class Issue {
     }
 
     public String getCreatedAt() {
-        return createdAt;
+        return created_at;
     }
 }

@@ -12,11 +12,7 @@ public class User {
 
     private String htmlUrl;
 
-    public User(String login, String avatarUrl, String htmlUrl) {
-        this.login = login;
-        this.avatarUrl = avatarUrl;
-        this.htmlUrl = htmlUrl;
-    }
+//    public User(String login, String avatarUrl, String htmlUrl) {}
 
     public String getLogin() {
         return login;

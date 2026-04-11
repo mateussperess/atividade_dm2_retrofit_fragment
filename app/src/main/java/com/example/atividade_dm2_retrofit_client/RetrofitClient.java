@@ -1,5 +1,7 @@
 package com.example.atividade_dm2_retrofit_client;
 
+import android.util.Log;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
@@ -13,11 +15,19 @@ public class RetrofitClient {
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(chain -> {
-                    Request request = chain.request().newBuilder()
-		            .addHeader("Authorization", "Bearer " + BuildConfig.GITHUB_TOKEN)
-			    .build();
+                    Request request = chain.request();
+//                    Log.d("HTTP_URL", request.url().toString());
                     return chain.proceed(request);
                 })
+                .addInterceptor(chain -> {
+                    Request request = chain.request().newBuilder()
+                            .addHeader("Authorization", "Bearer " + BuildConfig.GITHUB_TOKEN)
+                            .build();
+                    return chain.proceed(request);
+                })
+//                .addInterceptor(new okhttp3.logging.HttpLoggingInterceptor(msg ->
+//                        Log.d("HTTP_BODY", msg))
+//                        .setLevel(okhttp3.logging.HttpLoggingInterceptor.Level.BODY))
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()

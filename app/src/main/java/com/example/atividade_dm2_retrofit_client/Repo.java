@@ -1,20 +1,15 @@
 package com.example.atividade_dm2_retrofit_client;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Repo {
     private Long id;
     private String name;
+
     private String full_name;
     private String description;
-    private String url;
     private Owner owner;
-
-    public Repo(Long id, String name, String full_name, String description, String url) {
-        this.id = id;
-        this.name = name;
-        this.full_name = full_name;
-        this.description = description;
-        this.url = url;
-    }
+    private String url;
 
     public Long getId() {
         return id;

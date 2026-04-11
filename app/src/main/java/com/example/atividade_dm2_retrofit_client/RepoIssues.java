@@ -21,6 +21,7 @@ import retrofit2.Response;
 public class RepoIssues extends AppCompatActivity {
     RecyclerView rvIssues;
     TextView txtEmpty;
+    TextView txtRepo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,25 +36,46 @@ public class RepoIssues extends AppCompatActivity {
 
         rvIssues = findViewById(R.id.rvIssues);
         txtEmpty = findViewById(R.id.txtEmptyIssues);
+        txtRepo = findViewById(R.id.txtRepo);
 
         String owner = getIntent().getStringExtra("owner");
         String repoName = getIntent().getStringExtra("repoName");
+
+        txtRepo.setText(repoName);
         getIssues(owner, repoName);
     }
 
     private void getIssues(String owner, String repoName) {
+        Log.d("ISSUES_REQUEST", "owner=" + owner + " | repo=" + repoName);
         Call<List<Issue>> call = RetrofitClient.getInstance().getMyApi().getRepoIssues(owner, repoName);
         call.enqueue(new Callback<List<Issue>>() {
             @Override
             public void onResponse(Call<List<Issue>> call, Response<List<Issue>> response) {
                 List<Issue> issues = response.body();
-                Log.d("API_RESPONSE", "Code:" + response.code());
-                Log.d("API_RESPONSE", "Body:" + response.body());
-                Log.d("API_RESPONSE", "Message:" + response.message());
+//                try {
+//                    String raw = response.errorBody() != null
+//                            ? response.errorBody().string()
+//                            : "sem errorBody";
+//                    Log.d("RAW_ERROR", raw);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+
+//                Log.d("RAW_CODE", String.valueOf(response.code()));
+//                Log.d("RAW_HEADERS", response.headers().toString());
+
+                // kkkkkk passei horas debugando pra descobrir que o problema erra o id da issue, que tinha
+                // colocado como int e deveria ser Long, dado o tamanho do ID ...
 
                 if (issues == null || issues.isEmpty()) {
                     txtEmpty.setVisibility(TextView.VISIBLE);
                     return;
+                }
+
+                if (issues != null) {
+                    for (Issue issue : issues) {
+                        Log.d("ISSUE_ITEM", "title=" + issue.getTitle() + " | state=" + issue.getState());
+                    }
                 }
                 rvIssues.setLayoutManager(new LinearLayoutManager(RepoIssues.this));
                 rvIssues.setAdapter(new AdaptadorIssue(issues));
